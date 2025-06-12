@@ -8,7 +8,7 @@ const PORT = 8055;
 server.use(cors());
 server.use(express.json());
 
-// MySQL Connection
+// MySQL connection setup
 const con = mysql.createConnection({
   host: 'localhost',
   user: 'root',
@@ -17,6 +17,7 @@ const con = mysql.createConnection({
   port: 3306,
 });
 
+// Connect to MySQL
 con.connect((err) => {
   if (err) {
     console.error('Error connecting to DB:', err.message);
@@ -25,7 +26,7 @@ con.connect((err) => {
   console.log('Connected to MySQL database!');
 });
 
-// Add User
+// Add new user
 server.post('/add-user', (req, res) => {
   const { fullname, username, usertype } = req.body;
   const sql = 'INSERT INTO users (FullName, UserName, UserType) VALUES (?, ?, ?)';
@@ -35,7 +36,7 @@ server.post('/add-user', (req, res) => {
   });
 });
 
-// Get Users
+// Get all users
 server.get('/get-users', (req, res) => {
   const sql = 'SELECT * FROM users';
   con.query(sql, (error, result) => {
@@ -44,7 +45,7 @@ server.get('/get-users', (req, res) => {
   });
 });
 
-// Delete User
+// Delete user by ID
 server.delete('/delete-user/:id', (req, res) => {
   const { id } = req.params;
   const sql = 'DELETE FROM users WHERE ID = ?';
@@ -54,6 +55,7 @@ server.delete('/delete-user/:id', (req, res) => {
   });
 });
 
+// Start the server
 server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
